@@ -1,6 +1,8 @@
+
+
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-family: 'Times New Roman', sans-serif;
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -15,19 +17,14 @@ textarea{
 
 .dashboard {
   text-align: center;
-  background-color: transparent;
-  color: black;
-  border-radius: 0;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
   border-bottom: 10px solid black;
 }
 
 .description{
   white-space: pre-wrap;
-}
-
-.time-block{
-  text-align: center;
-  border-radius: 15px;
 }
 
 .row {
@@ -36,26 +33,6 @@ textarea{
   border-top: 1px solid white;;
 }
 
-.hour {
-  background-color: #ffffff;
-  color: #000000;
-  border-top: 1px dashed #000000;
-}
-
-.past {
-  background-color: #d3d3d3;
-  color: white;
-}
-
-.present {
-  background-color: #ff6961;
-  color: white;
-}
-
-.future {
-  background-color: #77dd77;
-  color: white;
-}
 
 .saveBtn {
   border-left: 1px solid black;
@@ -66,6 +43,6 @@ textarea{
 }
 
 .saveBtn i:hover {
-  font-size: 20px;
+  font-size: 14px;
   transition: all .3s ease-in-out;
 }
