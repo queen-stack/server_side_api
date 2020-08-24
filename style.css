@@ -34,7 +34,7 @@ textarea{
 }
 
 
-.saveBtn {
+input[type="submit"] {
   border-left: 1px solid black;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -45,4 +45,16 @@ textarea{
 .saveBtn i:hover {
   font-size: 14px;
   transition: all .3s ease-in-out;
+}
+
+.input [type='text']{
+  margin-top: 30px;
+  margin-left: 40px;
+  height: 50px;
+  width: 300px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+
+
+
 }
