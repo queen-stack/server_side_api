@@ -27,9 +27,18 @@
       <h1 class="display-3">Weather Dashboard</h1>
       <p class="forecast">Five Day Forecast</p>
     </header>
-    <div class="input">
-<input type="text" class="inputValue" place holder="Search for a city">
-<input type="submit" class="submit" class="button">
+    <main class="flex-row justify-space-between">
+      <div class="col-12 col-md-4"></div>
+      <div class="col-12 col-md-8"></div>
+      <div class="card">
+        <h3 class="card-header text-uppercase">Search By City</h3>
+        <form id="city-form" class="card-body">
+          <label class="form-label" for="cityname">City Name</label>
+          <input name="city_name" id="city_name" type="text" autofocus="true" class="form-input" />
+          <button type="submit" class="btn">Search</button>
+        </form>
+      </div>
+    </main>
     </div>
     <div class="display">
       <h1 class="name"></h1>

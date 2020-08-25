@@ -1,3 +1,5 @@
+var userFormEl = document.querySelector("#city_name");
+var nameInputEl = document.querySelector("#cityname");
 var button = document.querySelector('.button')
 var inputValue = document.querySelector('.inputValue')
 var name = document.querySelector('.name');
