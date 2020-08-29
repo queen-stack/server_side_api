@@ -23,10 +23,7 @@ var unitsPref = 'imperial';
 var unitsChar = '&degF';
 var cityInputEl = document.querySelector("#city-input-form");
 
-//var cityName;
-//var cityLat;   // latitude
-//var cityLong;  // longitude
-
+// Make sure that the user actually typed something before calling the API.
 function validateSearchCriteria(event) {
    event.preventDefault();
    var cityName = document.querySelector("#city-input-text").value.trim();
@@ -91,13 +88,30 @@ function fetchFutureForecast(cityName, oneCallUrl) {
    });
 }
 
-// This is WAY basic and just intended to show how to pull and display the data.
+// Capitalize the first letter of each part of the city name.
+function capitalizeCityName(cityName) {
+   var tokens = cityName.split(' ');
+   for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].length === 1) {
+         tokens[i] = tokens[i].toUpperCase();
+      } else {
+         tokens[i] = tokens[i].charAt(0).toUpperCase() + tokens[i].substring(1).toLowerCase();
+      } 
+   }
+   return tokens.join(' ');
+}
+
+// This is  basic and to outline how to pull and display the data.
 // Needs to be set up with correct elements in the html and accompanying .css to make it pretty.
 function populatePage(cityName, data) {
    console.log(data);
+
+   cityName = capitalizeCityName(cityName);
+
    var currForecastArea = document.querySelector('#curr-forecast-container');
+   var dateOut = moment.unix(data.current.dt);
    var cf = '';
-   cf += '<h2>' + cityName + '</h2>';
+   cf += '<h2>' + cityName + ' (' + moment.unix(data.current.dt).format('L') + ')' + '</h2>';
    cf += "<img src='https://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png'>";
    cf += '<p>' + 'Temperature: ' + data.current.temp + unitsChar + '</p>';
    cf += '<p>' + 'Humidity: ' + data.current.humidity + '%' + '</p>';
@@ -108,7 +122,7 @@ function populatePage(cityName, data) {
    var futureForecastArea = document.querySelector('#future-forecast-container');
    var ff = '';
    for (var d = 0; d < 5; d++) {
-      ff += '<p>' + 'Date: ' + data.daily[d].dt + '</p>';
+      ff += '<p>' + 'Date: ' + moment.unix(data.daily[d].dt).format('L') + '</p>';
       ff += "<img src='https://openweathermap.org/img/w/" + data.daily[d].weather[0].icon + ".png'>";
       ff += '<p>' + 'Temp: ' + data.daily[d].temp.day + unitsChar + '</p>';
       ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
