@@ -1,7 +1,7 @@
 # server_side_api
 weather app
 
-Use the OpenWeather API https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that provides basic setup and usage instructions. You will use localStorage to store any persistent data.
+Use the OpenWeather API https://openweathermap.org/api) to retrieve weather data for cities.You will use localStorage to store any persistent data.
 
 ##User Story
 AS A traveler
