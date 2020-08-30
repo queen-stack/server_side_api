@@ -13,15 +13,17 @@
 //     pass it to the fetchForecast function.
 //
 // Structure for localStorage is just an object.
-//    { city:OneCallAPIUrl, city:OneCallAPIUrl, ... }
+//    { cityID:OneCallAPIUrl, cityname:OneCallAPIUrl, ... }
 //
-// https://api.openweathermap.org/data/2.5/weather?q={city name}&appID={your api key}
+// https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={your api key}
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
 
 var openweathermapApiKey = '60fa35f6a0783d15c0467e7b0b081c27';
 var unitsPref = 'imperial';
 var unitsChar = '&degF';
 var cityInputEl = document.querySelector("#cityForm");
+const localStorageKey = 'weatherData';
+var searchHistory;
 
 // Make sure that the user actually typed something before calling the API.
 function validateSearchCriteria(e) {
@@ -104,9 +106,9 @@ function capitalizeCityName(cityName) {
 // This is  basic  to outline how to pull and display the data.
 // Needs to be set up with correct elements in the html and accompanying .css
 function populatePage(cityName, data) {
-    console.log(cityName);
+    // console.log(cityName);
 
-    //cityName = capitalizeCityName(cityName);
+    cityName = capitalizeCityName(cityName);
     // This is for functional requirements
     var currForecastArea = document.querySelector('#curr-forecast-container');
     var dateOut = moment.unix(data.current.dt);
@@ -132,45 +134,29 @@ function populatePage(cityName, data) {
 cityInputEl.addEventListener('submit', validateSearchCriteria);
 
 
+function recallSearchHistory() {
+    searchHistory = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    showItem();
+}
+
+function updateSearchHistory(savedCityName) {
+    if (!searchHistory.includes(savedCityName)) {
+        searchHistory.push(savedCityName);
+        localStorage.setItem(localStorageKey, JSON.stringify(searchHistory));
+        showItem();
+    }
+
+}
 
 
 
-// // //Allow clearing of all searches from local storage and browser
-// showInfo();
-// document.getElementById("cityBtn").addEventListener("click", function (e) {
-//     e.preventDefault();
-//     //Show the clear button when search is done
-//     document.getElementById("clear").setAttribute("style", "style='visibility: visible'");
-//     getInfo();
-//     showInfo();
-// });
-
-
-// //document.getElementById("clear").addEventListener("click", clearInfo);
-
-function getInfo() {
-    // Grab user's city search
-    var cityText = document.getElementById("cityText").value;
-    console.log(cityText);
-    // Save user name and message to local storage
-    localStorage.setItem(cityText, searchedCities);
-   }
-
-   function showInfo() {
-    var ul = document.getElementById("cityText");
+function showItem() {
+    var ul = document.getElementById("searchOfCities");
     // Display users and messages in the browser
-    for(var i = 0; i < localStorage.length; i++) {
-        var cities = localStorage.key(i);
-        console.log(cities);
+    for (var i = 0; i < searchHistory.length; i++) {
         var li = document.createElement("li");
-        li.innerHTML = `${searchedCities}`;
+        li.innerHTML = searchHistory[i];
         ul.appendChild(li);
-    };
-   }
-
-
-// function clearInfo() {
-//     localStorage.clear();
-//     location.reload();
-// }
-cityInputEl.addEventListener('submit', validateSearchCriteria);
+    }
+}
+recallSearchHistory();
