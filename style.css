@@ -3,19 +3,24 @@
 body {
   font-family: 'Times New Roman', sans-serif;
   font-size: 14px;
-  line-height: 1;
+  font-weight: bold;
+  line-height: 2;
+  background-color: beige;
 }
 
-textarea{
-  background: transparent;
-  border: none;
-  resize: none;
-  color: #000000;
-  border-left: 1px solid black;
-  padding: 10px;
+.curr-forecast-container{
+  background: rgb(116, 71, 71);
+  border: solid;
+  resize: auto;
+  color: #Blue;
+  border-center: 1px solid black;
+  padding: 5px;
+  font-family: 'Times New Roman', sans-serif;
+  font-size: 10px;
+  line-height: 2;
 }
 
-.dashboard {
+.savedCityName{
   text-align: center;
   background-color: black;
   color: white;
@@ -23,15 +28,7 @@ textarea{
   border-bottom: 10px solid black;
 }
 
-.description{
-  white-space: pre-wrap;
-}
 
-.row {
-  white-space: pre-wrap;
-  height: 80px;
-  border-top: 1px solid white;;
-}
 
 
 input[type="submit"] {
@@ -42,19 +39,10 @@ input[type="submit"] {
   color: white;
 }
 
-.saveBtn i:hover {
+.submit {
   font-size: 14px;
   transition: all .3s ease-in-out;
+  
 }
 
-.input [type='text']{
-  margin-top: 30px;
-  margin-left: 40px;
-  height: 50px;
-  width: 300px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: small;
 
-
-
-}

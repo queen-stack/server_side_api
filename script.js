@@ -24,6 +24,7 @@ var unitsChar = '&degF';
 var cityInputEl = document.querySelector("#cityForm");
 const localStorageKey = 'weatherData';
 var searchHistory;
+var cityListEl = document.querySelector("#searchOfCities");
 
 // Make sure that the user actually typed something before calling the API.
 function validateSearchCriteria(e) {
@@ -46,8 +47,7 @@ function fetchCurrentWeather(cityName) {
         .then(function (response) {
             if (response.status !== 200) {
                 // report an error to the user   (TBD)
-                console.log('There was some kind of a problem:  Status Code: ' + response.status);
-                return;
+
             }
 
             response = response.json()
@@ -65,7 +65,7 @@ function fetchCurrentWeather(cityName) {
         })
         .catch(function (err) {
             // Display a "fail" message to the user.  (TBD)
-            console.log('weather API error: ' + err);
+
         });
 }
 
@@ -75,7 +75,7 @@ function fetchFutureForecast(cityName, oneCallUrl) {
         .then(function (response) {
             if (response.status !== 200) {
                 // report an error to the user  (TBD)
-                console.log('oneCallAPI problem:  Status code: ' + response.status);
+
                 return;
             }
 
@@ -86,7 +86,7 @@ function fetchFutureForecast(cityName, oneCallUrl) {
         })
         .catch(function (err) {
             // Display a "fail" message to the user.  (TBD)
-            console.log('oneCallAPI error: ' + err);
+
         });
 }
 
@@ -106,7 +106,7 @@ function capitalizeCityName(cityName) {
 // This is  basic  to outline how to pull and display the data.
 // Needs to be set up with correct elements in the html and accompanying .css
 function populatePage(cityName, data) {
-    // console.log(cityName);
+
 
     cityName = capitalizeCityName(cityName);
     // This is for functional requirements
@@ -130,8 +130,9 @@ function populatePage(cityName, data) {
         ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
     }
     futureForecastArea.innerHTML = ff;
+    updateSearchHistory(cityName);
 }
-cityInputEl.addEventListener('submit', validateSearchCriteria);
+
 
 
 function recallSearchHistory() {
@@ -148,15 +149,21 @@ function updateSearchHistory(savedCityName) {
 
 }
 
-
-
 function showItem() {
     var ul = document.getElementById("searchOfCities");
     // Display users and messages in the browser
+    $('#searchOfCities').empty();
     for (var i = 0; i < searchHistory.length; i++) {
         var li = document.createElement("li");
         li.innerHTML = searchHistory[i];
         ul.appendChild(li);
     }
 }
+cityInputEl.addEventListener('submit', validateSearchCriteria);
+cityListEl.addEventListener('click', function (event) {
+
+    var cityName = event.srcElement.innerHTML;
+    fetchCurrentWeather(cityName);
+});
+
 recallSearchHistory();
