@@ -13,121 +13,164 @@
 //     pass it to the fetchForecast function.
 //
 // Structure for localStorage is just an object.
-//    { cityname:OneCallAPIUrl, cityname:OneCallAPIUrl, ... }
+//    { city:OneCallAPIUrl, city:OneCallAPIUrl, ... }
 //
-// https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={your api key}
+// https://api.openweathermap.org/data/2.5/weather?q={city name}&appID={your api key}
 // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
 
 var openweathermapApiKey = '60fa35f6a0783d15c0467e7b0b081c27';
 var unitsPref = 'imperial';
 var unitsChar = '&degF';
-var cityInputEl = document.querySelector("#city-input-form");
+var cityInputEl = document.querySelector("#cityForm");
 
 // Make sure that the user actually typed something before calling the API.
-function validateSearchCriteria(event) {
-   event.preventDefault();
-   var cityName = document.querySelector("#city-input-text").value.trim();
-   //cityName = cityName.trim();
-   if (cityName !== '') {
-      fetchCurrentWeather(cityName);
-   }
+function validateSearchCriteria(e) {
+    e.preventDefault();
+    var cityName = document.querySelector("#cityText").value.trim();
+    //cityName = cityName.trim();
+    if (cityName !== '') {
+        fetchCurrentWeather(cityName);
+    }
 }
 
 // Call the current weather API to verify that the city name is one that will be found
-// and to retrieve the latitute and longitude so that we can call the oneCallAPI for ALL
+// and to retrieve the latitude and longitude so that we can call the oneCallAPI for ALL
 // the required weather info.
 function fetchCurrentWeather(cityName) {
-   fetch('https://api.openweathermap.org/data/2.5/weather?'
-      + 'q=' + cityName
-      + '&appid=' + openweathermapApiKey
-   )
-   .then(function(response) {
-      if (response.status !== 200) {
-         // report an error to the user   (TBD)
-         console.log('There was some kind of a problem:  Status Code: ' + response.status);
-         return;
-      }
-      
-      response = response.json()
-      response.then(function(data) {
-         var cityLat = data.coord.lat;
-         var cityLong = data.coord.lon;
-         var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?'
-                             + 'lat=' + cityLat
-                             + '&lon=' + cityLong
-                             + '&units=' + unitsPref
-                             + '&exclude=minutely,hourly'
-                             + '&appid=' + openweathermapApiKey
-         fetchFutureForecast(cityName, oneCallUrl); 
-      });
-   })
-   .catch(function(err) {
-      // Display a "fail" message to the user.  (TBD)
-      console.log('weather API error: ' + err);
-   });
+    fetch('https://api.openweathermap.org/data/2.5/weather?'
+        + 'q=' + cityName
+        + '&appid=' + openweathermapApiKey
+    )
+        .then(function (response) {
+            if (response.status !== 200) {
+                // report an error to the user   (TBD)
+                console.log('There was some kind of a problem:  Status Code: ' + response.status);
+                return;
+            }
+
+            response = response.json()
+            response.then(function (data) {
+                var cityLat = data.coord.lat;
+                var cityLong = data.coord.lon;
+                var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?'
+                    + 'lat=' + cityLat
+                    + '&lon=' + cityLong
+                    + '&units=' + unitsPref
+                    + '&exclude=minutely,hourly'
+                    + '&appid=' + openweathermapApiKey
+                fetchFutureForecast(cityName, oneCallUrl);
+            });
+        })
+        .catch(function (err) {
+            // Display a "fail" message to the user.  (TBD)
+            console.log('weather API error: ' + err);
+        });
 }
 
 // Call the oneCall API to retrieve all the weather info required for display.
 function fetchFutureForecast(cityName, oneCallUrl) {
-   fetch(oneCallUrl)
-   .then(function(response) {
-      if (response.status !== 200) {
-         // report an error to the user  (TBD)
-         console.log('oneCallAPI problem:  Status code: ' + response.status);
-         return;
-      }
+    fetch(oneCallUrl)
+        .then(function (response) {
+            if (response.status !== 200) {
+                // report an error to the user  (TBD)
+                console.log('oneCallAPI problem:  Status code: ' + response.status);
+                return;
+            }
 
-      response = response.json();
-      response.then(function(data) {
-         populatePage(cityName, data);
-      });
-   })
-   .catch(function(err) {
-      // Display a "fail" message to the user.  (TBD)
-      console.log('oneCallAPI error: ' + err);
-   });
+            response = response.json();
+            response.then(function (data) {
+                populatePage(cityName, data);
+            });
+        })
+        .catch(function (err) {
+            // Display a "fail" message to the user.  (TBD)
+            console.log('oneCallAPI error: ' + err);
+        });
 }
 
 // Capitalize the first letter of each part of the city name.
 function capitalizeCityName(cityName) {
-   var tokens = cityName.split(' ');
-   for (var i = 0; i < tokens.length; i++) {
-      if (tokens[i].length === 1) {
-         tokens[i] = tokens[i].toUpperCase();
-      } else {
-         tokens[i] = tokens[i].charAt(0).toUpperCase() + tokens[i].substring(1).toLowerCase();
-      } 
-   }
-   return tokens.join(' ');
+    var tokens = cityName.split(' ');
+    for (var i = 0; i < tokens.length; i++) {
+        if (tokens[i].length === 1) {
+            tokens[i] = tokens[i].toUpperCase();
+        } else {
+            tokens[i] = tokens[i].charAt(0).toUpperCase() + tokens[i].substring(1).toLowerCase();
+        }
+    }
+    return tokens.join(' ');
 }
 
-// This is  basic and to outline how to pull and display the data.
-// Needs to be set up with correct elements in the html and accompanying .css to make it pretty.
+// This is  basic  to outline how to pull and display the data.
+// Needs to be set up with correct elements in the html and accompanying .css
 function populatePage(cityName, data) {
-   console.log(data);
+    console.log(cityName);
 
-   cityName = capitalizeCityName(cityName);
+    //cityName = capitalizeCityName(cityName);
+    // This is for functional requirements
+    var currForecastArea = document.querySelector('#curr-forecast-container');
+    var dateOut = moment.unix(data.current.dt);
+    var cf = '';
+    cf += '<h2>' + cityName + ' (' + moment.unix(data.current.dt).format('L') + ')' + '</h2>';
+    cf += "<img src='https://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png'>";
+    cf += '<p>' + 'Temperature: ' + data.current.temp + unitsChar + '</p>';
+    cf += '<p>' + 'Humidity: ' + data.current.humidity + '%' + '</p>';
+    cf += '<p>' + 'Wind Speed: ' + data.current.wind_speed + ' MPH' + '</p>';
+    cf += '<p>' + 'UV Index: ' + data.current.uvi + '</p>';
+    currForecastArea.innerHTML = cf;
 
-   var currForecastArea = document.querySelector('#curr-forecast-container');
-   var dateOut = moment.unix(data.current.dt);
-   var cf = '';
-   cf += '<h2>' + cityName + ' (' + moment.unix(data.current.dt).format('L') + ')' + '</h2>';
-   cf += "<img src='https://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png'>";
-   cf += '<p>' + 'Temperature: ' + data.current.temp + unitsChar + '</p>';
-   cf += '<p>' + 'Humidity: ' + data.current.humidity + '%' + '</p>';
-   cf += '<p>' + 'Wind Speed: ' + data.current.wind_speed + ' MPH' + '</p>';
-   cf += '<p>' + 'UV Index: ' + data.current.uvi + '</p>';
-   currForecastArea.innerHTML = cf;
-   
-   var futureForecastArea = document.querySelector('#future-forecast-container');
-   var ff = '';
-   for (var d = 0; d < 5; d++) {
-      ff += '<p>' + 'Date: ' + moment.unix(data.daily[d].dt).format('L') + '</p>';
-      ff += "<img src='https://openweathermap.org/img/w/" + data.daily[d].weather[0].icon + ".png'>";
-      ff += '<p>' + 'Temp: ' + data.daily[d].temp.day + unitsChar + '</p>';
-      ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
-   }
-   futureForecastArea.innerHTML = ff;
+    var futureForecastArea = document.querySelector('#future-forecast-container');
+    var ff = '';
+    for (var d = 0; d < 5; d++) {
+        ff += '<p>' + 'Date: ' + moment.unix(data.daily[d].dt).format('L') + '</p>';
+        ff += "<img src='https://openweathermap.org/img/w/" + data.daily[d].weather[0].icon + ".png'>";
+        ff += '<p>' + 'Temp: ' + data.daily[d].temp.day + unitsChar + '</p>';
+        ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
+    }
+    futureForecastArea.innerHTML = ff;
 }
+cityInputEl.addEventListener('submit', validateSearchCriteria);
 
+
+
+
+
+// // //Allow clearing of all searches from local storage and browser
+// showInfo();
+// document.getElementById("cityBtn").addEventListener("click", function (e) {
+//     e.preventDefault();
+//     //Show the clear button when search is done
+//     document.getElementById("clear").setAttribute("style", "style='visibility: visible'");
+//     getInfo();
+//     showInfo();
+// });
+
+
+// //document.getElementById("clear").addEventListener("click", clearInfo);
+
+function getInfo() {
+    // Grab user's city search
+    var cityText = document.getElementById("cityText").value;
+    console.log(cityText);
+    // Save user name and message to local storage
+    localStorage.setItem(cityText, searchedCities);
+   }
+
+   function showInfo() {
+    var ul = document.getElementById("cityText");
+    // Display users and messages in the browser
+    for(var i = 0; i < localStorage.length; i++) {
+        var cities = localStorage.key(i);
+        console.log(cities);
+        var li = document.createElement("li");
+        li.innerHTML = `${searchedCities}`;
+        ul.appendChild(li);
+    };
+   }
+
+
+// function clearInfo() {
+//     localStorage.clear();
+//     location.reload();
+// }
 cityInputEl.addEventListener('submit', validateSearchCriteria);
