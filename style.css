@@ -12,8 +12,8 @@ body {
   background: rgb(116, 71, 71);
   border: solid;
   resize: auto;
-  color: #Blue;
-  border-center: 1px solid black;
+  color: Blue;
+  border: 1px solid black;
   padding: 5px;
   font-family: 'Times New Roman', sans-serif;
   font-size: 10px;

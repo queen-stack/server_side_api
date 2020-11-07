@@ -124,11 +124,22 @@ function populatePage(cityName, data) {
     var futureForecastArea = document.querySelector('#future-forecast-container');
     var ff = '';
     for (var d = 0; d < 5; d++) {
-        ff += '<p>' + 'Date: ' + moment.unix(data.daily[d].dt).format('L') + '</p>';
-        ff += "<img src='https://openweathermap.org/img/w/" + data.daily[d].weather[0].icon + ".png'>";
-        ff += '<p>' + 'Temp: ' + data.daily[d].temp.day + unitsChar + '</p>';
-        ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
+        // ff += '<p>' + 'Date: ' + moment.unix(data.daily[d].dt).format('L') + '</p>';
+        // ff += `"<img src='https://openweathermap.org/img/w/" + data.daily[d].weather[0].icon + ".png'>";`
+        // ff += '<p>' + 'Temp: ' + data.daily[d].temp.day + unitsChar + '</p>';
+        // ff += '<p>' + 'Humidity: ' + data.daily[d].humidity + '%' + '</p>';
+
+        ff +=`
+      <div class="card col-sm-2 ml-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Date: ${moment.unix(data.daily[d].dt).format('L')}</h5>
+          <img src='https://openweathermap.org/img/w/${data.daily[d].weather[0].icon}.png' />
+          <p class="card-text">Temp:  ${data.daily[d].temp.day + unitsChar}</p>
+          <p class="card-text">Humidity:  ${data.daily[d].humidity + '%'}</p>
+          </div>
+      </div>`
     }
+    
     futureForecastArea.innerHTML = ff;
     updateSearchHistory(cityName);
 }
